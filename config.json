@@ -1,12 +1,12 @@
 {
   "general": {
-    "language": "en",
+    "language": "lt",
     "currency": "USD",
     "identifierType": "license"
   },
   "frameworkIntegration": {
-    "enabled": false,
-    "resource": "your-resource"
+    "enabled": true,
+    "resource": "extendedmode"
   },
   "database": {
     "profileQueries": true
@@ -15,10 +15,10 @@
     "newAccount": 1000
   },
   "cash": {
-    "startAmount": 2000
+    "startAmount": 800
   },
   "accounts": {
-    "startAmount": 500,
+    "startAmount": 3000,
     "clearingNumber": 920,
     "maximumNumberOfAccounts": 3
   },
@@ -40,7 +40,7 @@
   },
   "bankBlips": {
     "enabled": true,
-    "name": "Bank",
+    "name": "Bankas",
     "colour": 2,
     "icon": 108,
     "scale": 0.55,
@@ -91,7 +91,7 @@
   },
   "target": {
     "type": "qtarget",
-    "enabled": true,
+    "enabled": false,
     "bankZones": [
       {
         "position": {
