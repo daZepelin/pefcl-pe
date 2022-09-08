@@ -18,9 +18,9 @@
     "startAmount": 800
   },
   "accounts": {
-    "startAmount": 3000,
+    "startAmount": 0,
     "clearingNumber": 920,
-    "maximumNumberOfAccounts": 3
+    "maximumNumberOfAccounts": 10
   },
   "atms": {
     "distance": 5.0,
