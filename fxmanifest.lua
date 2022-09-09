@@ -20,6 +20,8 @@ client_script {
 } 
 server_script "src/dist/server.js"
 
+dependency 'extendedmode'
+
 files {
   'web/dist/index.html',
   'web/dist/**/*',
