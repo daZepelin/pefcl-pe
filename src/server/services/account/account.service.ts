@@ -808,7 +808,7 @@ export class AccountService {
     const { accountIdentifier: identifier, source, userIdentifier, role } = req.data;
 
     if (!userIdentifier && !source) {
-      logger.error('Missing userIdentifier or source. Cannot remove user.');
+      logger.error('Missing userIdentifier or source. Cannot add user.');
       throw new ServerError(GenericErrors.BadInput);
     }
 
@@ -817,11 +817,15 @@ export class AccountService {
       : this._userService.getUser(source ?? 0);
 
     if (!user) {
+      logger.error(
+        `User for provided identifier (${userIdentifier}) or source (${source}) was not found.`,
+      );
       throw new ServerError(UserErrors.NotFound);
     }
 
-    const existingAccount = await this._accountDB.getUniqueAccountByIdentifier(identifier);
+    const existingAccount = await this._accountDB.getUniqueAccountByIdentifier(identifier ?? '');
     if (!existingAccount) {
+      logger.error(`Account for provided identifier (${identifier}) was not found.`);
       throw new ServerError(AccountErrors.NotFound);
     }
 
@@ -833,7 +837,7 @@ export class AccountService {
       );
 
       if (sharedAccount) {
-        logger.error('User already exists in shared account.');
+        logger.error(`User ${userIdentifier} already exists in ${identifier} shared account.`);
         throw new ServerError(AccountErrors.UserAlreadyExists);
       }
 
