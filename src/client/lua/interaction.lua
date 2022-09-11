@@ -19,14 +19,10 @@ CreateThread(function ()
         if distBank <= 10.0 then
           DrawMarker(2, pos.x, pos.y, pos.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.5, 0.5, 0.3, 255, 255, 255, 50, false, true, 2, nil, nil, false)
 
-          if dist <= 4.5 then
+          if distBank <= 4.5 then
             exports['sd-hud']:ShowNotification('[Left ALT] - Atidaryti banką')
             isInBankZone = true
-          else
-            ClearHelp(true)
           end
-
-
           sleep = 0
         end
       end
