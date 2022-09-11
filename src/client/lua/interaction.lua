@@ -1,9 +1,11 @@
 local config = json.decode(LoadResourceFile(GetCurrentResourceName(), "config.json"))
 local bank_coords = config.bankBlips.coords
+local atm_props = config.atms.props
 
 local isInBankZone = false
 
 CreateThread(function ()
+    
   if not config.target.enabled then
     while true do
       local player_id = PlayerPedId()
@@ -13,8 +15,8 @@ CreateThread(function ()
       for i = 1, #bank_coords do
         local pos = bank_coords[i]
 
-        local dist = #(player_coords - vector3(pos.x, pos.y, pos.z))
-        if dist <= 10.0 then
+        local distBank = #(player_coords - vector3(pos.x, pos.y, pos.z))
+        if distBank <= 10.0 then
           DrawMarker(2, pos.x, pos.y, pos.z, 0.0, 0.0, 0.0, 0.0, 180.0, 0.0, 0.5, 0.5, 0.3, 255, 255, 255, 50, false, true, 2, nil, nil, false)
 
           if dist <= 4.5 then
@@ -23,6 +25,7 @@ CreateThread(function ()
           else
             ClearHelp(true)
           end
+
 
           sleep = 0
         end
