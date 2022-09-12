@@ -13,13 +13,13 @@
     "translations:generate-index": "node ./scripts/generateLocales.js",
     "translations:pull": "localazy download",
     "translations:push": "localazy upload -w $LOCALAZY_WRITE_KEY -r $LOCALAZY_READ_KEY",
-    "setup": "yarn nx run-many --target=setup --all",
+    "setup": "yarn nx run-many --target=setup --all && yarn translations:pull && yarn translations:generate-index",
     "build": "yarn nx run-many --target=build --all",
     "lint": "yarn nx run-many --target=lint --all",
     "dev": "yarn nx run-many --target=dev --all",
     "dev:ingame": "yarn nx run-many --target=dev:ingame --all",
     "dev:mobile": "yarn nx run-many --target=dev:mobile --all",
-    "prerelease": "yarn build && sh ./scripts/prerelease.sh",
+    "pre-release": "yarn build && sh ./scripts/prerelease.sh",
     "release": "yarn build && sh ./scripts/release.sh"
   },
   "devDependencies": {

@@ -1,10 +1,11 @@
 import { setBankIsOpen, setAtmIsOpen } from 'client';
-import { t } from 'i18next';
 import cl_config from 'cl_config';
+import { translations } from 'i18n';
 const exp = global.exports;
 
 const isTargetEnabled = cl_config.target?.enabled ?? false;
 const targetType = cl_config.target?.type ?? 'qtarget';
+const isTargetDebugEnabled = cl_config.target?.debug ?? false;
 const isTargetAvailable = GetResourceState(targetType) === 'started';
 
 if (isTargetEnabled && isTargetAvailable) {
@@ -38,7 +39,7 @@ if (isTargetEnabled && isTargetAvailable) {
       {
         name,
         heading: zone.heading,
-        debugPoly: false,
+        debugPoly: isTargetDebugEnabled,
         minZ: zone.minZ,
         maxZ: zone.maxZ,
       },
@@ -47,7 +48,7 @@ if (isTargetEnabled && isTargetAvailable) {
           {
             event: 'pefcl:open:bank',
             icon: 'fas fa-building-columns',
-            label: t('Open bank'),
+            label: translations.t('Open bank'),
           },
         ],
         distance: 1.5,
