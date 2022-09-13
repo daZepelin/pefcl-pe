@@ -9,6 +9,7 @@ import { transactionBaseAtom } from '@data/transactions';
 import { useConfig } from '@hooks/useConfig';
 import { Alert, Stack } from '@mui/material';
 import { Box } from '@mui/system';
+import { GenericErrors } from '@typings/Errors';
 import { TransactionEvents } from '@typings/Events';
 import { CreateTransferInput, TransferType } from '@typings/Transaction';
 import { formatMoney } from '@utils/currency';
@@ -22,6 +23,7 @@ const MobileTransferView = () => {
   const { general } = useConfig();
 
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [amount, setAmount] = useState('');
   const [selectedFromAccountId, setSelectedFromAccountId] = useState<number>();
@@ -54,18 +56,34 @@ const MobileTransferView = () => {
     const transfer: CreateTransferInput = {
       amount: value,
       fromAccountId: selectedFromAccountId,
-      toAccountId: isExternalTransfer ? selectedToAccountId * 10 : selectedToAccountId,
+      toAccountId: isExternalTransfer
+        ? selectedToAccountId * Math.pow(10, selectedToAccountId.toString().split('.')[1].length)
+        : selectedToAccountId,
       message,
       type,
     };
 
-    await fetchNui(TransactionEvents.CreateTransfer, transfer);
-    setSuccess(t('Successfully transferred {{amount}}.', { amount: formatMoney(value, general) }));
-    setIsLoading(false);
-    updateAccounts();
-    updateExternalAccounts();
-    updateTransactions();
-    setAmount('');
+    try {
+      await fetchNui(TransactionEvents.CreateTransfer, transfer);
+      setSuccess(
+        t('Successfully transferred {{amount}}.', { amount: formatMoney(value, general) }),
+      );
+      setIsLoading(false);
+      updateAccounts();
+      updateExternalAccounts();
+      updateTransactions();
+      setAmount('');
+    } catch (error: Error | unknown) {
+      if (error instanceof Error && error.message === GenericErrors.NotFound) {
+        setError(t('No account found to receive transfer.'));
+      } else {
+        setError(t('Something went wrong, please try again later.'));
+      }
+      setIsLoading(false);
+      updateAccounts();
+      updateExternalAccounts();
+      updateTransactions();
+    }
   };
 
   return (
@@ -109,6 +127,11 @@ const MobileTransferView = () => {
         {success && (
           <Alert color="info" variant="outlined" sx={{ color: '#fff' }}>
             {success}
+          </Alert>
+        )}
+        {error && (
+          <Alert color="error" variant="outlined" sx={{ color: '#fff' }}>
+            {error}
           </Alert>
         )}
       </Stack>
