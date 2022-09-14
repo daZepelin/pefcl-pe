@@ -43,7 +43,7 @@ const MobileTransferView = () => {
   const isSameAccount = selectedFromAccountId === selectedToAccountId;
   const isButtonDisabled = !isValidNewBalance || !isValidTransaction || isSameAccount || isLoading;
 
-  const isExternalTransfer = Boolean(selectedToAccountId && selectedToAccountId < 1);
+  const isExternalTransfer = externalAccounts.some((e) => e.id === selectedToAccountId);
   const message = isExternalTransfer ? t('External transfer') : t('Internal transfer');
   const type = isExternalTransfer ? TransferType.External : TransferType.Internal;
 
@@ -56,9 +56,7 @@ const MobileTransferView = () => {
     const transfer: CreateTransferInput = {
       amount: value,
       fromAccountId: selectedFromAccountId,
-      toAccountId: isExternalTransfer
-        ? selectedToAccountId * Math.pow(10, selectedToAccountId.toString().split('.')[1].length)
-        : selectedToAccountId,
+      toAccountId: selectedToAccountId,
       message,
       type,
     };
